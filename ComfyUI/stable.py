@@ -1,12 +1,15 @@
-import json
 from urllib import request, parse
+from googletrans import Translator
+import json
 import random
 import requests
 import threading
 import time
 import os
-from googletrans import Translator
 from PIL import Image
+import openai
+from dotenv import load_dotenv
+
 
 translator = Translator()
 filename= ""
