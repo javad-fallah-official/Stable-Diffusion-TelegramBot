@@ -65,23 +65,13 @@ def response(Message,offset):
                 Telegram.sendMessage(f"Your {prompt} is Successfully Made!",chat_id, keyboardStart)
                 return 0
             
-            elif text == "archive":
-                sendArchiveKey(chat_id)
-            
-            
-            
             else:
                 Telegram.sendMessage(f"Invalid the prompt can`t be {text}",chat_id)
                 return None
-      
         
-           
-            
-            
-            
-            
-            
-            
+        elif text == "archive":
+                sendArchiveKey(chat_id)  
+                
         else :
             Telegram.sendMessage(f"Invalid", chat_id)
             
