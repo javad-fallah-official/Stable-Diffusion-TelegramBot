@@ -1,9 +1,15 @@
 import random
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+comfyUrl =  os.getenv('COMFY_UI_URL') 
 
 
+def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
 
-def gneratePhoto(userprompt, chat_id, file_number,outputPath):
     seed = random.randint(0, 1000000)
     prompt = userprompt
     times = 0
@@ -118,33 +124,23 @@ def gneratePhoto(userprompt, chat_id, file_number,outputPath):
 
     }
 
-    print("generating")
 
-    response = requests.post(
-        'http://127.0.0.1:8188/prompt', json={'prompt': data})
+    response = requests.post(comfyUrl, json={'prompt': data})
     result = response.json()
 
-    print(response)
-    print(result)
 
-    print("file name def")
     filename = "{}.{:02d}.png".format(chat_id, int(file_number))
-    print("image path de")
     imagePath = f"{outputPath}\\{chat_id}\\{filename}"
-    
-    print("adding numbers")
     file_number = int(file_number)
     file_number = file_number + 1
     file_number = str(file_number)
-    print(file_number)
-    
-    print("writing number")
+
     if os.path.isdir(f'{outputPath}\\{chat_id}'):
-        with open(f'{outputPath}\\{chat_id}\\{chat_id}.txt','w') as f:
+        with open(f'{outputPath}\\{chat_id}\\{chat_id}.txt', 'w') as f:
             f.write(file_number)
     else:
         os.mkdir(f'{outputPath}\\{chat_id}')
-        with open(f'{outputPath}\\{chat_id}\\{chat_id}.txt','w') as f:
+        with open(f'{outputPath}\\{chat_id}\\{chat_id}.txt', 'w') as f:
             f.write(file_number)
-    
+
     return imagePath
