@@ -21,7 +21,7 @@ def main():
     offset = 0
     while True:
         #reading all new messages with json
-        data = Telegram.Read_message(offset)
+        data = Telegram.getUpdates(offset)
         # check if there is any message
         if 'result' in data:
             for Message in data["result"]:

@@ -9,7 +9,7 @@ API_KEY = os.getenv('TELEGRAM_API_TOKEN')
 base_url = "https://api.telegram.org/bot"+API_KEY
 
 
-def Read_message(offset):
+def getUpdates(offset):
     data = []
     parameters = {
         "offset": offset,
@@ -50,19 +50,6 @@ def sendMessage(text, id, keyboard=[]):
 
 
 
-# def sendMessage(text, id, keyboard=keyboardDefault):
-#     headers = {'Content-type': 'application/json'}
-#     parameters = {
-#         'chat_id': id,
-#         'text': text,
-#         'reply_markup': {
-#             'keyboard': keyboard,
-#             'resize_keyboard': True,
-#             'one_time_keyboard': True
-#         }
-#     }
-#     response = requests.get(tUrl + "/sendMessage",
-#                             data=json.dumps(parameters), headers=headers)
 
 
 # def sendPhoto(image_path, chat_id):
@@ -78,10 +65,6 @@ def sendMessage(text, id, keyboard=[]):
 #         print(response)
 
 
-# def getMessages():
-#     response = requests.get(tUrl + "/getUpdates")
-#     data = response.json()
-#     return data
 
 
 # def Read_input_message(chat_id, offset):
