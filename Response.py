@@ -58,12 +58,11 @@ def response(Message,offset):
                 file_number = getPhotoNumber(chat_id)
                 image = Comfy.gneratePhoto(prompt, chat_id, file_number, outputPath)
                 waitForPhotoToGenerate(image, chat_id)
-                with open(f"{outputPath}\\{chat_id}\\isGenerating.txt", 'w') as f:
-                    f.write("0")
                 Telegram.sendMessage("Uploading Image to Telegram...", chat_id)
                 Telegram.sendPhoto(image, chat_id)
                 Telegram.sendMessage(f"Your {prompt} is Successfully Made!",chat_id, keyboardStart)
-                return 0
+                generating_status[user_id] = False
+                return None
             
             else:
                 Telegram.sendMessage(f"Invalid the prompt can`t be {text}",chat_id)
