@@ -126,7 +126,7 @@ def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
 
 
     response = requests.post(comfyUrl, json={'prompt': data})
-    result = response.json()
+    # result = response.json()
 
 
     filename = "{}.{:02d}.png".format(chat_id, int(file_number))

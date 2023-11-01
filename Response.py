@@ -39,21 +39,19 @@ def response(Message,offset):
         elif text.startswith("/generate") :   
             
             #check if user generating
-            if generating_status[user_id]:
+            if user_id in generating_status and generating_status[user_id]:
                 Telegram.sendMessage("You can only Imagine 1 Text at a time!⚠️", chat_id)
                 return None
-
-            #asking for prompt
-            Telegram.sendMessage("Enter your Text for me to Imagine!",chat_id, keyboardCancel)
-            
-            
+               
             prompt = text[8:].strip() if isPromptValid(text) else None
 
             if prompt:
-                
                 #changing user state to generating
                 generating_status[user_id] = True
+                
+                #translating prompt
                 prompt = translator.translate(prompt, dest='en').text
+                
                 Telegram.sendMessage("Generating Image...", chat_id)
                 file_number = getPhotoNumber(chat_id)
                 image = Comfy.gneratePhoto(prompt, chat_id, file_number, outputPath)
@@ -89,7 +87,7 @@ def isGenerating(chat_id):
     
     
 def isPromptValid(text):
-    if (text.len() > 8) and not(text == "imagine!" or  text == "/generate" or text == "gen" or text == "\start" or text == "/start" or text == "start" or text == "\help" or text == "/help"):
+    if (len(text) > 8) and not(text == "imagine!" or  text == "/generate" or text == "gen" or text == "\start" or text == "/start" or text == "start" or text == "\help" or text == "/help"):
         return True
     else:
         return False
