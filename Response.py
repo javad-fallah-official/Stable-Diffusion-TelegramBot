@@ -83,11 +83,9 @@ def isGenerating(chat_id):
             return False
     else:
         return False
-    
-    
-    
+       
 def isPromptValid(text):
-    if (len(text) > 8) and not(text == "imagine!" or  text == "/generate" or text == "gen" or text == "\start" or text == "/start" or text == "start" or text == "\help" or text == "/help"):
+    if (len(text) > 8) and not(text == "imagine!" or  text == "/generate" or text == "gen" or text == "\start" or text == "/start" or text == "start" or text == "\help" or text == "" or text == None):
         return True
     else:
         return False
