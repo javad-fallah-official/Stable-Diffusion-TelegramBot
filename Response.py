@@ -10,7 +10,7 @@ load_dotenv()
 generating_status = {}
 translator = Translator()
 
-outputPath = os.envget('OUTPUT_PATH')
+outputPath = os.getenv('OUTPUT_PATH')
 
 
 def response(Message,offset):
