@@ -1,7 +1,6 @@
 import Telegram
 
 def response(Message,offset):
-    #try:
         # extrating datas from json
         text =     Message["message"]["text"].lower()
         chat_id =  Message["message"]["chat"]["id"]
@@ -58,8 +57,4 @@ def response(Message,offset):
     #         sendPhoto(image, chat_id)
     #         sendMessage(f"Your {prompt} is Successfully Made!", chat_id, keyboardStart)
     
-    
-    # except:
-    #     # sendMessage("Try again please", chat_id, keyboardStart)
-    #     print("An error occurred")
 
