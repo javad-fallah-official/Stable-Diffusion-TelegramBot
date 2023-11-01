@@ -65,11 +65,15 @@ def response(Message,offset):
                 Telegram.sendMessage(f"Your {prompt} is Successfully Made!",chat_id, keyboardStart)
                 return 0
             
+            elif text == "archive":
+                sendArchiveKey(chat_id)
+            
+            
+            
             else:
                 Telegram.sendMessage(f"Invalid the prompt can`t be {text}",chat_id)
                 return None
       
-        
         
            
             
@@ -118,3 +122,27 @@ def waitForPhotoToGenerate(photoPath, userWhoRequested):
         if os.path.exists(photoPath):
             Telegram.sendMessage("Image Generated!", userWhoRequested)
             break
+        
+def sendArchiveKey(chatId, text = ""):
+    print(f"{chatId}")
+    number = getPhotoNumber(chatId)
+    a = number
+    a = int(a)
+    a = a - 1
+    b = a - 1
+    c = b - 1
+    d = c - 1
+    
+    print(a)
+    print(d)
+    
+    keyboardHistory = [['Imagine!']]
+    
+    while a > 1:
+        keyboardHistory = keyboardHistory + [[f'{a}', f'{b}', f'{c}']] 
+        a = a - 3
+        b = a - 1
+        c = '' if b - 1 == 0 else b - 1
+    Telegram.sendMessage("histori",chatId, keyboardHistory)
+        
+        
