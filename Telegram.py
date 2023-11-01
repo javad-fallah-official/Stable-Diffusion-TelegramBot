@@ -1,45 +1,54 @@
 import requests
 import os
 from dotenv import load_dotenv
-
+import json
 
 # reading .env variables
 load_dotenv()
-API_KEY = "6825444978:AAHJ8oAnUOYgniPY-K9LyCA9Pe_kRGCj2HI"
+API_KEY = os.getenv('TELEGRAM_API_TOKEN')
 base_url = "https://api.telegram.org/bot"+API_KEY
 
 
-def Read_message (offset):
+def Read_message(offset):
+    data = []
     parameters = {
         "offset": offset,
         "limit": 1
     }
-    req = requests.get(base_url + "/getUpdates", data = parameters)
+    req = requests.get(base_url + "/getUpdates", data=parameters)
     data = req.json()
     return data
-  
-  
 
 
-  
-def Say(text,id):
+def sendPhoto(url, id):
     parameters = {
-        "chat_id" : id,
-        "text" : text
+        "chat_id": id,
+        "photo": url
     }
-    resp = requests.get(base_url + "/sendMessage", data = parameters)
-    print("Alice: " + text)
-    
-def sendPhoto(url,id):
+    resp = requests.get(base_url + "/sendPhoto", params=parameters)
+
+
+def sendMessage(text, id, keyboard=[]):
+    headers = {'Content-type': 'application/json'}
+    reply_markup = {
+         'keyboard': keyboard,
+          'resize_keyboard': True,
+          'one_time_keyboard': True
+    }
     parameters = {
-        "chat_id" : id,
-        "photo" : url
+        'chat_id': id,
+        'text': text,
+        'reply_markup': reply_markup
     }
-    resp = requests.get(base_url + "/sendPhoto", data = parameters)
-    print("Alice: " + url)
-    
-    
-    
+    resp = requests.get(base_url + "/sendMessage", data=json.dumps(parameters), headers=headers)
+    print(resp.status_code)
+
+
+
+
+
+
+
 
 # def sendMessage(text, id, keyboard=keyboardDefault):
 #     headers = {'Content-type': 'application/json'}
@@ -62,7 +71,7 @@ def sendPhoto(url,id):
 #     image.save(f'{outputPath}\\{filename}.jpg', 'JPEG', quality=80)
 #     print("image saved")
 #     imagePath = f'{outputPath}\\{filename}.jpg'
-    
+
 #     with open(imagePath, 'rb') as photo:
 #         response = requests.post(
 #             tUrl + "/sendPhoto", data={"chat_id": chat_id}, files={"photo": photo})
@@ -87,6 +96,3 @@ def sendPhoto(url,id):
 #                         return input
 #         else:
 #             continue
-        
-        
-

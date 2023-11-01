@@ -4,7 +4,6 @@ import requests
 
 
 def gneratePhoto(userprompt, chat_id, file_number,outputPath):
-
     seed = random.randint(0, 1000000)
     prompt = userprompt
     times = 0
