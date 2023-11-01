@@ -1,7 +1,7 @@
 import requests
+import json
 import os
 from dotenv import load_dotenv
-import json
 
 # reading .env variables
 load_dotenv()
@@ -41,8 +41,6 @@ def sendMessage(text, id, keyboard=[]):
         'reply_markup': reply_markup
     }
     resp = requests.get(base_url + "/sendMessage", data=json.dumps(parameters), headers=headers)
-    print(resp.status_code)
-
 
 
 
