@@ -1,14 +1,17 @@
 #This file is the logic of The logic of the Bot
 import Telegram
 import  os
-from dotenv import load_dotenv
 from googletrans import Translator
 import Comfy
+import threading
+from dotenv import load_dotenv
+from queue import Queue
 
-# reading .env variables
-load_dotenv()
 generating_status = {}
 translator = Translator()
+
+
+load_dotenv()
 
 outputPath = os.getenv('OUTPUT_PATH')
 
@@ -54,10 +57,12 @@ def response(Message,offset):
                 
                 Telegram.sendMessage("Generating Image...", chat_id)
                 file_number = getPhotoNumber(chat_id)
-                image = Comfy.gneratePhoto(prompt, chat_id, file_number, outputPath)
-                waitForPhotoToGenerate(image, chat_id)
+
+                # Create a thread for image generation
+                image = Comfy.gneratePhoto(prompt, chat_id, file_number, "dreamshaper_8.safetensors")
                 Telegram.sendMessage("Uploading Image to Telegram...", chat_id)
-                Telegram.sendPhoto(image, chat_id)
+                image = Comfy.imageCompressor(image)
+                Telegram.sendLocalPhoto(image, chat_id)
                 Telegram.sendMessage(f"Your {prompt} is Successfully Made!",chat_id, keyboardStart)
                 generating_status[user_id] = False
                 return None
@@ -101,12 +106,6 @@ def getPhotoNumber(chat_id):
     else:
         return True
     
-def waitForPhotoToGenerate(photoPath, userWhoRequested):
-    #must add a timeout
-    while True:
-        if os.path.exists(photoPath):
-            Telegram.sendMessage("Image Generated!", userWhoRequested)
-            break
         
 def sendArchiveKey(chatId, text = ""):
     print(f"{chatId}")

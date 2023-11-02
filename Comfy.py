@@ -2,17 +2,20 @@ import random
 import requests
 import os
 from dotenv import load_dotenv
+import time
+from PIL import Image
 
 load_dotenv()
 
+outputPath = os.getenv('OUTPUT_PATH')
 comfyUrl =  os.getenv('COMFY_UI_URL') 
 
 
-def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
+def gneratePhoto(userprompt, chat_id, file_number ,ckpt_name):
 
     seed = random.randint(0, 1000000)
     prompt = userprompt
-    times = 0
+    imagePath = ""
     fileprefix = chat_id
 
     data = {
@@ -45,7 +48,7 @@ def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
         },
         "4": {
             "inputs": {
-                "ckpt_name": "sd_xl_base_1.0_0.9vae.safetensors"
+                "ckpt_name": ckpt_name
             },
             "class_type": "CheckpointLoaderSimple"
         },
@@ -125,12 +128,12 @@ def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
     }
 
 
+
     response = requests.post(comfyUrl, json={'prompt': data})
-    # result = response.json()
-
-
+    time.sleep(30)
     filename = "{}.{:02d}.png".format(chat_id, int(file_number))
     imagePath = f"{outputPath}\\{chat_id}\\{filename}"
+    
     file_number = int(file_number)
     file_number = file_number + 1
     file_number = str(file_number)
@@ -142,5 +145,9 @@ def gneratePhoto(userprompt, chat_id, file_number ,outputPath):
         os.mkdir(f'{outputPath}\\{chat_id}')
         with open(f'{outputPath}\\{chat_id}\\{chat_id}.txt', 'w') as f:
             f.write(file_number)
-
     return imagePath
+
+def imageCompressor(imagePath):
+    image = Image.open(f'{imagePath}')
+    image.save(f'{outputPath}\\temp.jpg', 'JPEG', quality=81)
+    return f'{outputPath}\\temp.jpg'

@@ -2,8 +2,6 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from PIL import Image
-
 
 # reading .env variables
 load_dotenv()
@@ -30,6 +28,7 @@ def sendPhoto(url, id):
     resp = requests.get(base_url + "/sendPhoto", params=parameters)
 
 def sendLocalPhoto(imagePath, chat_id):
+    print(imagePath)
     with open(imagePath, 'rb') as photo:
         response = requests.post(
             base_url + "/sendPhoto", data={"chat_id": chat_id}, files={"photo": photo})
